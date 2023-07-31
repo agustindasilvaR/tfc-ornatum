@@ -1,0 +1,27 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="nav">
+        <h1>ORNATUM</h1>
+    </div>
+    <div id="register-form">
+        <h2><u>Create an account</u></h2>
+        <form id="form-input" (submit)="save()">
+            <input type="text" class="input" placeholder="FIRST NAME*" name="name" [(ngModel)]="name" required><br>
+            <input type="text" class="input" placeholder="SURNAME*" name="surname" [(ngModel)]="surname" required><br>
+            <input type="text" class="input" placeholder="USERNAME*" name="username" [(ngModel)]="username" required><br>
+            <input type="password" class="input" placeholder="PASSWORD*" name="password" [(ngModel)]="password" required><br>
+            <input type="password" class="input" placeholder="CONFIRM PASSWORD*" name="confirmPassword" [(ngModel)]="confirmPassword" required><br>
+            <input type="text" class="input" placeholder="EMAIL ADDRESS*" name="email" [(ngModel)]="email" required><br>
+            <button type="submit" class="button">SIGN UP</button><br>
+            <hr>
+            <p>Already have an account? <a [routerLink]="['/login']" routerLinkActive="router-link-active"><u>Sign in</u></a></p>
+        </form>
+    </div>
+</body>
+</html>

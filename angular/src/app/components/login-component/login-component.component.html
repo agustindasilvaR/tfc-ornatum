@@ -1,0 +1,29 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet">
+</head>
+<body>
+    <div id="nav">
+        <h1>ORNATUM</h1>
+    </div>
+    <div id="login-container">
+        <div id="login-img">
+            <img src="/assets/acne-fw20-collater.al-cover-790x530.jpg">
+        </div>
+        <div id="login-form">
+            <form id="form-input" (submit)="login()">
+                <u><h2 id="form-title">Log in, and have access to a creative fashion space in a whole other level.</h2></u><br>
+                <input type="text" id="username" name="username" class="input" placeholder="USERNAME*" [(ngModel)]="username"><br>
+                <input type="password" id="password" name="password" class="input" placeholder="PASSWORD*" [(ngModel)]="password"><br>
+                <button type="submit" class="button">SIGN IN</button>
+                <hr>
+                <p>Don't have an account yet? <a [routerLink]="['/register']" routerLinkActive="router-link-active" ><u>Sign up</u></a></p>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

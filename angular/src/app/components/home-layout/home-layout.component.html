@@ -1,0 +1,12 @@
+<div class="navbar">
+    <a href="home" id="home">HOME</a>
+    <button id="share"> + SHARE</button>
+    <input type="text" placeholder="SEARCH" id="search">
+    <a (click)="evaluateUser()" id="username">Hi, {{username}}!</a>
+    <a (click)="logout()">logout</a>
+</div>
+<div class="row">
+    <div *ngFor="let image of images" class="container">
+        <a href="home"><img [src]="image" alt="Posting Image" class="item"></a>
+    </div>
+</div>

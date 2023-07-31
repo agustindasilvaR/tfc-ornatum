@@ -1,0 +1,89 @@
+.navbar {
+    height: 100px;
+    display: flex;
+    align-items: center;
+}
+
+a:hover {
+  cursor: pointer;
+}
+
+#home {
+    margin-left: 100px;
+    color: black;
+    text-decoration: none;
+}
+#home:hover{
+    text-decoration: underline;
+}
+#share {
+    margin-left: 30px;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    background-color: black;
+    color: white;
+    border: none;
+    transition: 0.5s;
+}
+#share:hover {
+    background-color: rgb(203 203 203);
+    color: black;
+}
+#search {
+    margin-left: 200px;
+    width: 1000px;
+    text-align: start;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    border-radius: 20px;
+    background-color: rgb(203 203 203);
+    border: none
+}
+input[type="text"]::placeholder {
+    color: black;
+    font-style: italic;
+    padding-left: 15px;
+    margin-left: 15px;
+  }
+#username {
+    margin-left: 200px
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 4px;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .container {
+    flex-basis: 25%;
+    max-width: 25%;
+    padding: 0 4px;
+    width: 25%; /* Set the desired width */
+    height: 500px; /* Set the desired height */
+    overflow: hidden; /* Hide any content that exceeds the container */
+  }
+  
+  .container img {
+    margin-top: 8px;
+    vertical-align: middle;
+    width: 100%; /* Make the image fill the container horizontally */
+    height: 100%; /* Make the image fill the container vertically */
+    object-fit: cover; /* Crop the image to fit the container while maintaining aspect ratio */
+    border-radius: 50px;
+    transition: transform .5s;
+  }
+
+  .container img:hover {
+    transform: scale(1.5);
+    border-radius: 50px;
+  }
+
+
+
+
+
