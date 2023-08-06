@@ -6,7 +6,7 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'abc123.'
-CORS(app, origins='http://localhost:4200')
+CORS(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3386/ornatum'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False

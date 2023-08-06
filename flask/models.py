@@ -54,7 +54,7 @@ class Piece(db.Model):
         self.category_id = category_id
 
 class PostPiece(db.Model):
-    post_id = db.Column(db.Integer, db.ForeignKey('post.id'), primary_key=True)
+    post_id = db.Column(db.Integer, db.ForeignKey('posting.id'), primary_key=True)
     piece_id = db.Column(db.Integer, db.ForeignKey('piece.id'), primary_key=True)
 
     def __init__(self, post_id, piece_id):

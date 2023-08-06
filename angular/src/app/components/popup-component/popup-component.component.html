@@ -1,0 +1,16 @@
+<!-- popup-component.component.html -->
+<div *ngIf="data">
+    <div class="container">
+        <div class="image-container">
+            <img [src]="data.imageData" alt="Posting Image" class="popup-image">
+        </div>
+        <div class="pieces-list">
+            <ul>
+                <li *ngFor="let piece of data.pieces">
+                    <strong>{{ piece.brand }}, {{ piece.model }} </strong>
+                </li>
+            </ul>
+        </div>
+    </div>
+  </div>
+  

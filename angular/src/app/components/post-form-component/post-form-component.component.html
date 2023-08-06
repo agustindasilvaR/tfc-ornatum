@@ -1,0 +1,31 @@
+<form (ngSubmit)="uploadPost()" #postForm="ngForm" enctype="multipart/form-data">
+  <!-- Input fields for user_id, date, and image_data -->
+  <label for="user_id">User ID:</label>
+  <input type="text" id="user_id" name="user_id" [(ngModel)]="user_id" required>
+
+  <label for="date">Date:</label>
+  <input type="date" id="date" name="date" [(ngModel)]="date" required>
+
+  <label for="image_data">Image Data:</label>
+  <input type="file" id="image_data" name="image_data" (change)="onFileSelected($event)" required>
+
+  <h2>Add Pieces</h2>
+  <div *ngFor="let piece of pieces; let i = index">
+    <label for="brand">Brand:</label>
+    <input type="text" id="brand" name="brand" [(ngModel)]="pieces[i].brand" required>
+
+    <label for="model">Model:</label>
+    <input type="text" id="model" name="model" [(ngModel)]="pieces[i].model" required>
+
+    <label for="category_id">Category ID:</label>
+    <input type="text" id="category_id" name="category_id" [(ngModel)]="pieces[i].category_id" required>
+  </div>
+
+  <div *ngIf="pieces.length >= 5">
+    Maximum number of pieces (5) reached.
+  </div>
+
+  <button type="button" (click)="addPiece()" [disabled]="pieces.length >= 5">Add Piece</button>
+
+  <button type="submit">Upload Post</button>
+</form>

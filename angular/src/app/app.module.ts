@@ -3,6 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -13,6 +15,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeLayoutComponent } from './components/home-layout/home-layout.component';
 import { ProfileComponentComponent } from './components/profile-component/profile-component.component';
 import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
+import { PopupComponentComponent } from './components/popup-component/popup-component.component';
+import { PostFormComponentComponent } from './components/post-form-component/post-form-component.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -21,7 +25,9 @@ import { UnauthorizedComponent } from './components/unauthorized/unauthorized.co
     HomeComponentComponent,
     HomeLayoutComponent,
     ProfileComponentComponent,
-    UnauthorizedComponent
+    UnauthorizedComponent,
+    PopupComponentComponent,
+    PostFormComponentComponent
   ],
   imports: [
     BrowserModule,
@@ -29,7 +35,9 @@ import { UnauthorizedComponent } from './components/unauthorized/unauthorized.co
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatDialogModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -191,18 +191,22 @@ def get_all_posting_images():
 
 @app.route('/api/posts', methods=['POST'])
 def upload_post():
-    post_data = request.json
-
-    user_id = post_data['user_id']
+    user_id = request.form.get('user_id')
     date = dt.today()
     image_data = request.files['image_data'].read()
-    new_post = Posting(user_id, date, image_data)
+    new_post = Posting(user_id=user_id, date=date, image_data=image_data)
 
     try:
         db.session.add(new_post)
         db.session.commit()
-        return jsonify({'message': 'post uploaded'}), 200
+
+        # Get the post_id from the newly created post
+        post_id = new_post.id
+
+        return jsonify({'message': 'post uploaded', 'post_id': post_id}), 200
     except Exception as e:
+        print(e)
+        db.session.rollback()
         return jsonify({'message': 'failed'}), 500
 
 @app.route('/api/posts/<int:post_id>', methods=['PUT'])
@@ -257,21 +261,27 @@ def get_all_pieces():
     return jsonify(post_list)
 
 @app.route('/api/pieces', methods=['POST'])
+@app.route('/api/pieces', methods=['POST'])
 def add_piece():
-    piece_data = request.json
+    pieces_data = request.json  # Assuming the request contains a list of pieces
 
-    brand = piece_data['brand']
-    model = piece_data['model']
-    category_id = piece_data['category_id']
-
-    new_piece = Piece(brand=brand, model=model, category_id=category_id)
     try:
-        db.session.add(new_piece)
-        db.session.commit()
+        piece_ids = []
+        for piece_data in pieces_data:
+            brand = piece_data['brand']
+            model = piece_data['model']
+            category_id = piece_data['category_id']
 
-        return jsonify({'message': 'piece added'}), 200
+            new_piece = Piece(brand=brand, model=model, category_id=category_id)
+            db.session.add(new_piece)
+            db.session.commit()
+
+            piece_ids.append(new_piece.id)  # Store the piece ID for later use
+
+        return jsonify({'piece_ids': piece_ids}), 200
     except Exception as e:
-        return jsonify({'message': 'failed'}), 500
+        return jsonify({'message': 'Failed to add pieces'}), 500
+
 
 @app.route('/api/pieces/<int:id>', methods=['PUT'])
 def update_piece(id):
@@ -386,21 +396,48 @@ def get_all_post_pieces():
 
     return jsonify(post_piece_list)
 
+from flask import request, jsonify
+from datetime import datetime as dt
+
 @app.route('/api/post_pieces', methods=['POST'])
 def add_post_piece():
-    post_piece_data = request.json
-
-    post_id = post_piece_data['post_id']
-    piece_id = post_piece_data['piece_id']
-
-    new_post_piece = PostPiece(post_id=post_id, piece_id=piece_id)
     try:
-        db.session.add(new_post_piece)
-        db.session.commit()
+        post_piece_data = request.json
 
-        return jsonify({'message': 'Post Piece added'}), 200
+        # Make sure the request data is a list of dictionaries
+        if not isinstance(post_piece_data, list):
+            return jsonify({'message': 'Invalid data format. Expected a list of dictionaries.'}), 400
+
+        # Collect all the post_id and piece_id pairs
+        post_pieces = []
+        for item in post_piece_data:
+            post_id = item.get('post_id')
+            piece_id = item.get('piece_id')
+
+            if post_id is not None and piece_id is not None:
+                new_post_piece = PostPiece(post_id=post_id, piece_id=piece_id)
+                db.session.add(new_post_piece)
+                post_pieces.append({'post_id': post_id, 'piece_id': piece_id})
+
+        db.session.commit()  # Try committing here, outside of the loop
+        print("post_pieces:", post_pieces)  # Add this logging statement
+
+        return jsonify({'message': 'Post Pieces added successfully'}), 200
     except Exception as e:
-        return jsonify({'message': 'Failed to add Post Piece'}), 500
+        db.session.rollback()
+        print("Error:", str(e))  # Add this logging statement
+        return jsonify({'message': 'Failed to add Post Pieces'}), 500
+
+
+
+
+
+
+
+
+
+
+
 
 @app.route('/api/post_pieces/<int:id>', methods=['PUT'])
 def update_post_piece(id):
@@ -433,3 +470,18 @@ def delete_post_piece(id):
     except Exception as e:
         return jsonify({'message': 'Error'}), 500
 
+# post_piece table
+@app.route('/api/posts/<int:post_id>/pieces', methods=['GET'])
+def get_pieces_by_post_id(post_id):
+    print(f'Received post_id: {post_id}')
+    pieces = Piece.query.join(PostPiece).filter(PostPiece.post_id == post_id).all()
+    pieces_list = [{
+        'id': piece.id,
+        'brand': piece.brand,
+        'model': piece.model,
+        'category_id': piece.category_id
+    } for piece in pieces]
+
+    print(f'Pieces found: {pieces_list}')
+
+    return jsonify(pieces_list)

@@ -4,6 +4,9 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { PostService } from 'src/app/service/posting.service';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { MatDialog } from '@angular/material/dialog';
+import { ProfileComponentComponent } from '../profile-component/profile-component.component';
+import { PopupComponentComponent } from '../popup-component/popup-component.component';
 
 @Component({
   selector: 'app-home-layout',
@@ -14,15 +17,18 @@ export class HomeLayoutComponent implements OnInit {
   images: string[] | undefined;
   username: string = "";
   ids: number[] | undefined;
+  postId: number = 0;
+  pieces: any[] = [];
   postings: any[] = [];
 
-  constructor(private postService: PostService, private http: HttpClient, private sanitizer:DomSanitizer, private router:Router) { }
+  constructor(private postService: PostService, private http: HttpClient, private sanitizer:DomSanitizer, private router:Router, private dialog:MatDialog) { }
 
   ngOnInit(): void {
     this.checkToken()
     this.getPostingImages();
     this.getUsers();
-    this.getUserName()
+    this.getUserName();
+    this.getPosts();
   }
 
   getPostingImages(): void {
@@ -33,39 +39,41 @@ export class HomeLayoutComponent implements OnInit {
         this.sanitizer.bypassSecurityTrustResourceUrl('data:image/jpeg;base64,' + image)
       );
     });
+    console.log(this.images)
   }
 
   getPosts(): void {
     const url = 'http://127.0.0.1:8000/api/posts';
 
-    this.http.get(url).subscribe(
-      (response: any) => {
-        const postIds = response.map((post: any) => post.user_id);
-        console.log('Post IDs:', postIds);
+    this.http.get<any[]>(url).subscribe((response: any[]) => {
+      this.postings = response.map((post) => ({
+        id: post.id,
+        image_data: this.sanitizer.bypassSecurityTrustResourceUrl('data:image/jpeg;base64,' + post.image_data),
+      }));
+    });
+  }
+
+  onImageClick(postId: number): void {
+    const url = `http://127.0.0.1:8000/api/posts/${postId}/pieces`;
+  
+    this.http.get<any[]>(url).subscribe(
+      (pieces: any[]) => {
+        this.pieces = pieces;
         
-        const token = localStorage.getItem('token')
-
-        const jwtHelper = new JwtHelperService();
-
-        if (token !== null) {
-          const decodedToken = jwtHelper.decodeToken(token);
-          const storedId = decodedToken.id
-          console.log(decodedToken.id)
-                  // Check if the storedId exists and is present in the postIds array
-        if (storedId && postIds.includes(parseInt(storedId))) {
-          this.router.navigateByUrl('/profile');
-        }
-        } else {
-          // Handle the case where the token is null
-        }
-
-
+        const clickedImage = this.postings.find((post) => post.id === postId);
+        this.dialog.open(PopupComponentComponent, {
+          data: { id: clickedImage.id, imageData: clickedImage.image_data, pieces: this.pieces },
+          width: '1200px',
+          height: '800px',
+        });
+        console.log(this.pieces)
       },
       (error: any) => {
-        console.error('Error getting post_list:', error);
+        console.error('Error fetching post pieces:', error);
       }
     );
   }
+  
 
   evaluateUser(): void {
     const url = 'http://127.0.0.1:8000/api/users/list';

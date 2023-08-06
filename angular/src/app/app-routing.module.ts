@@ -5,6 +5,7 @@ import { RegisterComponentComponent } from './components/register-component/regi
 import { HomeComponentComponent } from './components/home-component/home-component.component';
 import { ProfileComponentComponent } from './components/profile-component/profile-component.component';
 import { UnauthorizedComponent } from './components/unauthorized/unauthorized.component';
+import { PostFormComponentComponent } from './components/post-form-component/post-form-component.component';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponentComponent},
@@ -12,6 +13,7 @@ const routes: Routes = [
   {path: 'home', component: HomeComponentComponent},
   {path: 'profile', component: ProfileComponentComponent},
   { path: 'unauthorized', component: UnauthorizedComponent },
+  { path: 'share', component: PostFormComponentComponent},
   { path: '**', redirectTo: '/unauthorized', pathMatch: 'full' }
 
 ];

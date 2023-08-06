@@ -1,0 +1,17 @@
+:host {
+    display: grid;
+    grid-template-columns: auto 1fr; /* First column auto-sized for image, second column takes remaining space */
+    align-items: center;
+    text-align: left;
+    padding: 20px;
+}
+.container {
+    width: 500px; /* Set the desired width here */
+    height: 700px; /* Set the desired height here */
+  }
+
+  img {
+    width: 100%; /* Make the image fit within the container */
+    height: 100%; /* Make the image fit within the container */
+    object-fit: cover; /* Scale and crop the image to fit the container without stretching */
+  }
