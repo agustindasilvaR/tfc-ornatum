@@ -261,26 +261,47 @@ def get_all_pieces():
     return jsonify(post_list)
 
 @app.route('/api/pieces', methods=['POST'])
-@app.route('/api/pieces', methods=['POST'])
 def add_piece():
-    pieces_data = request.json  # Assuming the request contains a list of pieces
-
     try:
-        piece_ids = []
+        pieces_data = request.json
+
+        # Make sure the request data is a list or a dictionary
+        if not isinstance(pieces_data, (list, dict)):
+            return jsonify({'message': 'Invalid data format. Expected a list or a dictionary.'}), 400
+
+        if isinstance(pieces_data, dict):
+            pieces_data = [pieces_data]  # Convert a single dictionary to a list of dictionaries
+
+        piece_responses = []  # To store the data of pieces that are added
+
         for piece_data in pieces_data:
-            brand = piece_data['brand']
-            model = piece_data['model']
-            category_id = piece_data['category_id']
+            brand = piece_data.get('brand')
+            model = piece_data.get('model')
+            category_id = piece_data.get('category_id')
 
-            new_piece = Piece(brand=brand, model=model, category_id=category_id)
-            db.session.add(new_piece)
-            db.session.commit()
+            if brand is not None and model is not None and category_id is not None:
+                new_piece = Piece(brand=brand, model=model, category_id=category_id)
+                db.session.add(new_piece)
+                db.session.commit()
 
-            piece_ids.append(new_piece.id)  # Store the piece ID for later use
+                # Append the data of the added piece
+                piece_response = {
+                    'id': new_piece.id,
+                    'brand': new_piece.brand,
+                    'model': new_piece.model,
+                    'category_id': new_piece.category_id
+                }
+                piece_responses.append(piece_response)
 
-        return jsonify({'piece_ids': piece_ids}), 200
+        # Return the data of added pieces
+        return jsonify({'added_pieces': piece_responses}), 200
     except Exception as e:
+        print(e)
         return jsonify({'message': 'Failed to add pieces'}), 500
+
+
+
+
 
 
 @app.route('/api/pieces/<int:id>', methods=['PUT'])
@@ -403,12 +424,12 @@ from datetime import datetime as dt
 def add_post_piece():
     try:
         post_piece_data = request.json
+        print(post_piece_data)
 
         # Make sure the request data is a list of dictionaries
         if not isinstance(post_piece_data, list):
             return jsonify({'message': 'Invalid data format. Expected a list of dictionaries.'}), 400
 
-        # Collect all the post_id and piece_id pairs
         post_pieces = []
         for item in post_piece_data:
             post_id = item.get('post_id')
@@ -419,23 +440,13 @@ def add_post_piece():
                 db.session.add(new_post_piece)
                 post_pieces.append({'post_id': post_id, 'piece_id': piece_id})
 
-        db.session.commit()  # Try committing here, outside of the loop
-        print("post_pieces:", post_pieces)  # Add this logging statement
+        db.session.commit()
 
         return jsonify({'message': 'Post Pieces added successfully'}), 200
     except Exception as e:
         db.session.rollback()
-        print("Error:", str(e))  # Add this logging statement
+        print("Error:", str(e))
         return jsonify({'message': 'Failed to add Post Pieces'}), 500
-
-
-
-
-
-
-
-
-
 
 
 
