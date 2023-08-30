@@ -12,7 +12,7 @@ import { PopupComponentComponent } from '../popup-component/popup-component.comp
   selector: 'app-home-layout',
   templateUrl: './home-layout.component.html',
   styleUrls: ['./home-layout.component.css']
-})
+}) 
 export class HomeLayoutComponent implements OnInit {
   images: string[] | undefined;
   username: string = "";
@@ -26,7 +26,6 @@ export class HomeLayoutComponent implements OnInit {
   ngOnInit(): void {
     this.checkToken()
     this.getPostingImages();
-    this.getUsers();
     this.getUserName();
     this.getPosts();
   }
@@ -115,7 +114,7 @@ export class HomeLayoutComponent implements OnInit {
     if (token !== null) {
       const decodedToken = jwtHelper.decodeToken(token);
       const storedName = decodedToken.username
-      this.username = storedName
+      this.username = storedName.toUpperCase()
     }
   }
 

@@ -1,0 +1,145 @@
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.button {
+    border: none;
+    background-color: black;
+    color: white;
+    height: 33px;
+    width: 228px;
+    margin-top: 23px;
+    text-align: center;
+    vertical-align: middle;
+    margin-right: 10px;
+    transition-duration: 0.5s;
+}
+
+.button:hover {
+    background-color: rgb(203 203 203);
+    color: black;
+}
+
+.container button {
+    width: 173px;
+    height: 33px;
+}
+
+.piece-container {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Adjust the gap as needed */
+}
+
+h3 {
+    text-decoration: underline;
+}
+
+#logout {
+    text-align: center;
+    color: red;
+}
+
+#exit {
+    color: red;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    margin-top: 9px;
+    margin-bottom: 10px;
+}
+
+.left-group, .right-group {
+    display: flex;
+    align-items: center;
+}
+
+.left-group > *:first-child {
+    margin-left: 100px;
+}
+
+.right-group > *:last-child {
+    margin-right: 180px;
+}
+
+.right-group a {
+    padding-right: 155px;
+}
+
+a:hover {
+    cursor: pointer;
+}
+
+#home {
+    margin-left: 100px;
+    color: black;
+    text-decoration: none;
+}
+
+#home:hover {
+    text-decoration: underline;
+}
+
+#share {
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    margin-left: 30px;
+    background-color: black;
+    color: white;
+    border: none;
+    transition: 0.5s;
+}
+
+#share:hover {
+    background-color: rgb(203 203 203);
+    color: black;
+}
+
+#search {
+    margin-left: 200px;
+    width: 1000px;
+    text-align: start;
+    padding: 8px 0; /* I've adjusted the padding shorthand property for top and bottom */
+    border-radius: 20px;
+    background-color: rgb(203 203 203);
+    border: none;
+}
+
+input[type="text"]::placeholder {
+    color: black;
+    font-style: italic;
+    padding-left: 15px;
+    margin-left: 15px;
+}
+
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 4px;
+    align-items: center;
+    justify-content: center;
+}
+
+.input {
+    margin-right: 10px;
+    border-radius: 5px;
+    background-color: rgb(212, 212, 212);
+    margin-top: 15px;
+    height: 33px;
+    width: 275px;
+}
+
+.input::placeholder {
+    padding-left: 4px;
+    color: black;
+}

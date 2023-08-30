@@ -1,17 +1,52 @@
 :host {
-    display: grid;
-    grid-template-columns: auto 1fr; /* First column auto-sized for image, second column takes remaining space */
-    align-items: center;
-    text-align: left;
-    padding: 20px;
+  display: block;
+  padding: 20px;
 }
-.container {
-    width: 500px; /* Set the desired width here */
-    height: 700px; /* Set the desired height here */
-  }
 
-  img {
-    width: 100%; /* Make the image fit within the container */
-    height: 100%; /* Make the image fit within the container */
-    object-fit: cover; /* Scale and crop the image to fit the container without stretching */
-  }
+.container {
+  display: grid;
+  grid-template-columns: 2fr 1fr; /* Image will take up 2/3 and list will take up 1/3 */
+  width: 800px;
+  height: 700px;
+}
+
+.image-container {
+  grid-column: 1 / 2; /* Position the image in the first column */
+}
+
+.pieces-list {
+  grid-column: 2 / 3; /* Position the list in the second column */
+  padding-left: 20px; /* A bit of spacing between the image and the list */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+  padding-left: 180px;
+}
+
+#delete {
+  margin-top: 8px;
+  background-color: red;
+  color: white;
+  border: none;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  transition: 0.5s;
+}
+
+#delete:hover {
+  background-color: rgb(203 203 203);
+  color: red;
+  cursor: pointer;
+}
+
+img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+

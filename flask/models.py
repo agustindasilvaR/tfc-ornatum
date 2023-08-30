@@ -32,26 +32,14 @@ class Posting(db.Model):
         self.date = date
         self.image_data = image_data
 
-
-
-class Category(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100))
-
-    def __init__(self, name):
-        self.name = name
-
-
 class Piece(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     brand = db.Column(db.String(100))
     model = db.Column(db.String(100))
-    category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
 
-    def __init__(self, brand, model, category_id):
+    def __init__(self, brand, model):
         self.brand = brand
         self.model = model
-        self.category_id = category_id
 
 class PostPiece(db.Model):
     post_id = db.Column(db.Integer, db.ForeignKey('posting.id'), primary_key=True)

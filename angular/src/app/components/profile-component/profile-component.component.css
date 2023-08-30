@@ -1,3 +1,157 @@
+.left-group, .right-group {
+  display: flex;
+  align-items: center;
+}
+
+.left-group > *:first-child {
+  margin-left: 100px;
+}
+
+.right-group > *:last-child {
+  margin-right: 200px;
+}
+
+.right-group a {
+  padding-right: 145px;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  margin-top: 30px;
+  margin-bottom: 50px;
+}
+
+#exit {
+  color: red;
+}
+
+h3 {
+  text-align: center;
+  text-decoration: underline;
+}
+
+#logout {
+  text-align: center;
+  color: red;
+}
+
+.navbar h1 {
+  margin: 0;
+}
+
+.navbar a, .navbar button {
+  margin: 0 10px;  /* Adjust this value as needed */
+  text-decoration: none;
+  color: inherit;
+}
+
+.navbar button {
+  padding: 5px 15px;
+  border: none;
+  background-color: #4CAF50;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+a:hover {
+  cursor: pointer;
+}
+
+#home {
+  color: black;
+  text-decoration: none;
+}
+
+#home:hover {
+  text-decoration: underline;
+}
+
+#share {
+  padding: 15px 8px;
+  background-color: black;
+  color: white;
+  border: none;
+  transition: 0.5s;
+}
+
+#share:hover {
+  background-color: rgb(203 203 203);
+  color: black;
+}
+
+#username {
+  margin-left: 20px  /* Adjust this if needed */
+}
+
+#username:hover {
+  text-decoration: underline;
+}
+
+/* ... rest of your CSS ... */
+
+
+/* ... rest of your CSS ... */
+
+
+
+/* ... rest of your CSS ... */
+
+
+.navbar h1 {
+  margin: 0;
+}
+
+.navbar a, .navbar button {
+  margin: 0 10px;
+  text-decoration: none;
+  color: inherit;  /* You can set any color you prefer */
+}
+
+.navbar button {
+  padding: 5px 15px;
+  border: none;
+  background-color: #4CAF50;  /* You can set any background-color you prefer */
+  color: #ffffff;
+  cursor: pointer;
+}
+
+
+a:hover {
+  cursor: pointer;
+}
+
+#home {
+    color: black;
+    text-decoration: none;
+}
+#home:hover{
+    text-decoration: underline;
+}
+#share {
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    background-color: black;
+    color: white;
+    border: none;
+    transition: 0.5s;
+}
+#share:hover {
+  background-color: rgb(203 203 203);
+  color: black;
+}
+
+input[type="text"]::placeholder {
+    color: black;
+    font-style: italic;
+    padding-left: 15px;
+    margin-left: 15px;
+  }
+
 .row {
     display: flex;
     flex-wrap: wrap;
@@ -29,3 +183,40 @@
     transform: scale(1.5);
     border-radius: 50px;
   }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 4px;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .container {
+    flex-basis: 25%;
+    max-width: 25%;
+    padding: 0 4px;
+    width: 25%; /* Set the desired width */
+    height: 500px; /* Set the desired height */
+    overflow: hidden; /* Hide any content that exceeds the container */
+  }
+  
+  .container img {
+    margin-top: 8px;
+    vertical-align: middle;
+    width: 100%; /* Make the image fill the container horizontally */
+    height: 100%; /* Make the image fill the container vertically */
+    object-fit: cover; /* Crop the image to fit the container while maintaining aspect ratio */
+    border-radius: 50px;
+    transition: transform .5s;
+  }
+
+  .container img:hover {
+    transform: scale(1.5);
+    border-radius: 50px;
+  }
+
+
+
+
+

@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIcon, MatIconModule } from '@angular/material/icon'
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -37,6 +39,8 @@ import { PostFormComponentComponent } from './components/post-form-component/pos
     BrowserAnimationsModule,
     MatSnackBarModule,
     MatDialogModule,
+    MatMenuModule,
+    MatIconModule,
     ReactiveFormsModule
   ],
   providers: [],

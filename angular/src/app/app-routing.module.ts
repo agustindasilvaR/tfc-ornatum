@@ -14,7 +14,7 @@ const routes: Routes = [
   {path: 'profile', component: ProfileComponentComponent},
   { path: 'unauthorized', component: UnauthorizedComponent },
   { path: 'share', component: PostFormComponentComponent},
-  { path: '**', redirectTo: '/unauthorized', pathMatch: 'full' }
+  { path: '**', redirectTo: '/home', pathMatch: 'full' }
 
 ];
 

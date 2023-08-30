@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
+import { PopupComponentComponent } from '../popup-component/popup-component.component';
+import { MatDialog } from '@angular/material/dialog';
 
 
 @Component({
@@ -14,13 +16,19 @@ export class ProfileComponentComponent implements OnInit {
 
   images: string[] | undefined;
   user_id: any;
+  username: string = "";
+  ids: number[] | undefined;
+  pieces: any[] = [];
+  postings: any[] = [];
+  postId: number = 0;
 
-  constructor(private http:HttpClient, private sanitizer:DomSanitizer, private router:Router) { }
+  constructor(private http:HttpClient, private sanitizer:DomSanitizer, private router:Router, private dialog:MatDialog) { }
 
   async ngOnInit(): Promise<void> {
     this.checkToken()
     await this.evaluateUser(); // Wait for evaluateUser() to complete
-    this.getPostingsByUserId(this.user_id); // Call getPostingsByUserId() after evaluateUser() is done
+    this.getUserName()
+    this.getPostingsByUserId(this.user_id);
   }
 
   getPostingImages(): void {
@@ -33,12 +41,36 @@ export class ProfileComponentComponent implements OnInit {
     });
   }
 
+  getUserName(): void {
+    const token = localStorage.getItem('token')
+
+    const jwtHelper = new JwtHelperService();
+
+    if (token !== null) {
+      const decodedToken = jwtHelper.decodeToken(token);
+      const storedName = decodedToken.username
+      this.username = storedName.toUpperCase()
+    }
+  }
+
   getPostingsByUserId(user_id: string): void {
     const url = `http://127.0.01.:8000/users/${user_id}/postings`;
-    this.http.get(url).subscribe((response: any) => {
-      this.images = response.images.map((image: string) =>
-        this.sanitizer.bypassSecurityTrustResourceUrl('data:image/jpeg;base64,' + image)
-      );
+    this.http.get<any[]>(url).subscribe((response: any[]) => {
+      this.postings = response.map((post) => ({
+        id: post.id,
+        image_data: this.sanitizer.bypassSecurityTrustResourceUrl('data:image/jpeg;base64,' + post.image_data),
+      }));
+    });
+  }
+
+  getPosts(): void {
+    const url = 'http://127.0.0.1:8000/api/posts';
+
+    this.http.get<any[]>(url).subscribe((response: any[]) => {
+      this.postings = response.map((post) => ({
+        id: post.id,
+        image_data: this.sanitizer.bypassSecurityTrustResourceUrl('data:image/jpeg;base64,' + post.image_data),
+      }));
     });
   }
 
@@ -78,10 +110,40 @@ export class ProfileComponentComponent implements OnInit {
     });
   }
 
+  onImageClick(postId: number): void {
+    console.log(this.postings)
+    const url = `http://127.0.0.1:8000/api/posts/${postId}/pieces`;
+  
+    this.http.get<any[]>(url).subscribe(
+      (pieces: any[]) => {
+        this.pieces = pieces;
+        
+        const clickedImage = this.postings.find((post) => post.id === postId);
+        this.dialog.open(PopupComponentComponent, {
+          data: { id: clickedImage.id, imageData: clickedImage.image_data, pieces: this.pieces },
+          width: '1200px',
+          height: '800px',
+        });
+        console.log(this.pieces)
+      },
+      (error: any) => {
+        console.error('Error fetching post pieces:', error);
+      }
+    );
+  }
+
   checkToken(): void {
     if(!localStorage.getItem('token')) { 
       this.router.navigateByUrl('/login')
   }
+  }
+
+  logout(): void {
+    // Clear the JWT token from local storage
+    localStorage.removeItem('token');
+  
+    // Redirect the user to the login page
+    this.router.navigate(['/login']); // Replace '/login' with the appropriate login page URL
   }
 
 }

@@ -1,28 +1,44 @@
-<form (ngSubmit)="uploadPost()" #postForm="ngForm" enctype="multipart/form-data">
-  <!-- Input fields for user_id, date, and image_data -->
-  <label for="user_id">User ID:</label>
-  <input type="text" id="user_id" name="user_id" [(ngModel)]="user_id" required>
-
-  <label for="date">Date:</label>
-  <input type="date" id="date" name="date" [(ngModel)]="date" required>
-
-  <label for="image_data">Image Data:</label>
-  <input type="file" id="image_data" name="image_data" (change)="onFileSelected($event)" required>
-
-  <!-- Input fields for pieces -->
-  <div *ngFor="let piece of piecesData; let i = index">
-    <label for="brand{{i}}">Brand {{i + 1}}:</label>
-    <input type="text" [id]="'brand' + i" [name]="'brand' + i" [(ngModel)]="piece.brand" required>
-
-    <label for="model{{i}}">Model {{i + 1}}:</label>
-    <input type="text" [id]="'model' + i" [name]="'model' + i" [(ngModel)]="piece.model" required>
-
-    <label for="category_id{{i}}">Category ID {{i + 1}}:</label>
-    <input type="text" [id]="'category_id' + i" [name]="'category_id' + i" [(ngModel)]="piece.category_id" required>
+<div class="navbar">
+  <!-- Group 1: Aligned to the left -->
+  <div class="left-group">
+      <a href="home" id="home">HOME</a>
+      <a href="share"><button id="share"> + SHARE</button></a>
   </div>
 
-  <!-- Add Piece button -->
-  <button type="button" (click)="addPieceInput()">Add Piece</button>
+  <!-- Centered Item -->
+  <h1>ORNATUM</h1>
+  
+  <!-- Group 2: Aligned to the right -->
+  <div class="right-group">
+      <a [matMenuTriggerFor]="userMenu" id="username">HI, {{username}}!</a>
+      <mat-menu #userMenu="matMenu">
+          <button mat-menu-item (click)="evaluateUser()" id="profile"><mat-icon>person</mat-icon>PROFILE</button>
+          <button mat-menu-item (click)="logout()" id="logout"><mat-icon id="exit">exit_to_app</mat-icon>LOGOUT</button>
+      </mat-menu>
+  </div>
+</div>
+<div class="container">
+  <form (ngSubmit)="uploadPost()" #postForm="ngForm" enctype="multipart/form-data">
 
-  <button type="submit">Upload Post</button>
-</form>
+    <h3>Share your ideas with others.</h3>
+  
+    <label for="image_data">Upload an image</label><br>
+    <input type="file" id="image_data" name="image_data" (change)="onFileSelected($event)" required>
+
+    <!-- Input fields for pieces -->
+    <div *ngFor="let piece of piecesData; let i = index" class="piece-container">
+
+      <input class="input" type="text" [id]="'brand' + i" [name]="'brand' + i" [(ngModel)]="piece.brand" placeholder="BRAND*" required>
+  
+      <input class="input" type="text" [id]="'model' + i" [name]="'model' + i" [(ngModel)]="piece.model" placeholder="MODEL*" required>
+  
+    </div>
+  
+
+  
+    <!-- Add Piece button -->
+    <button type="button" class="button" (click)="addPieceInput()">ADD PIECE</button>
+    <button type="button" class="button" (click)="deletePieceInput()">DELETE PIECE</button>
+    <button type="submit" class="button">CONFIRM</button>
+  </form>
+</div>

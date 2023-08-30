@@ -4,7 +4,7 @@ from flask import jsonify, request
 from werkzeug import Response
 from main import app, db
 import base64
-from models import User, Posting, Piece, Category, PostPiece
+from models import User, Posting, Piece, PostPiece
 from datetime import date as dt
 import jwt
 
@@ -146,8 +146,6 @@ def get_posting_image(posting_id):
 
 @app.route('/users/<user_id>/postings', methods=['GET'])
 def get_user_posting_images(user_id):
-    # Assuming you have a User model with a user_id attribute and a Posting model with a user_id attribute
-
     # Check if the user exists
     user = User.query.get(user_id)
     if user is None:
@@ -160,16 +158,22 @@ def get_user_posting_images(user_id):
     if not postings:
         return jsonify({'message': 'No postings found for this user'}), 404
 
-    # Return a list of posting data (you can modify this based on your requirements)
+    # Construct the response
+    response_data = []
 
-    images = []
     for posting in postings:
-        image_data = base64.b64encode(posting.image_data).decode('utf-8')
+        image_data_encoded = base64.b64encode(posting.image_data).decode('utf-8')
         # If you stored image URLs instead of binary data, you can construct the URL here instead
+        post_data = {
+            'id': posting.id,
+            'user_id': posting.user_id,
+            'date': posting.date,
+            'image_data': image_data_encoded
+        }
+        response_data.append(post_data)
 
-        images.append(image_data)
+    return jsonify(response_data), 200
 
-    return jsonify({'images': images})
 
 
 
@@ -254,7 +258,6 @@ def get_all_pieces():
             'id': piece.id,
             'brand': piece.brand,
             'model': piece.model,
-            'category_id': piece.category_id
         }
         post_list.append(post_data)
 
@@ -275,12 +278,12 @@ def add_piece():
         piece_responses = []  # To store the data of pieces that are added
 
         for piece_data in pieces_data:
-            brand = piece_data.get('brand')
-            model = piece_data.get('model')
-            category_id = piece_data.get('category_id')
+            brand = piece_data.get('brand').upper()
+            model = piece_data.get('model').upper()
 
-            if brand is not None and model is not None and category_id is not None:
-                new_piece = Piece(brand=brand, model=model, category_id=category_id)
+
+            if brand is not None and model is not None:
+                new_piece = Piece(brand=brand, model=model)
                 db.session.add(new_piece)
                 db.session.commit()
 
@@ -289,7 +292,6 @@ def add_piece():
                     'id': new_piece.id,
                     'brand': new_piece.brand,
                     'model': new_piece.model,
-                    'category_id': new_piece.category_id
                 }
                 piece_responses.append(piece_response)
 
@@ -316,7 +318,6 @@ def update_piece(id):
         piece.id = piece_data.get('id', piece.id)
         piece.brand = piece_data.get('brand', piece.brand)
         piece.model = piece_data.get('model', piece.model)
-        piece.category_id = piece_data.get('category_id', piece.category_id)
 
         db.session.commit()
         return jsonify({'message': 'Piece update successfully'}), 200
@@ -337,70 +338,6 @@ def delete_piece(piece_id):
         return jsonify({'message': 'piece deleted'}), 200
     except Exception as e:
         return jsonify({'message': 'error'}, 500)
-
-# Category table CRUD
-@app.route('/api/categories', methods=['GET'])
-def get_all_categories():
-    categories = Category.query.all()
-    category_list = []
-
-    for category in categories:
-        category_data = {
-            'id': category.id,
-            'name': category.name
-        }
-        category_list.append(category_data)
-        return jsonify(category_list)
-
-@app.route('/api/categories', methods=['POST'])
-def add_category():
-    category_data = request.json
-
-    name = category_data['name']
-    new_category = Category(name)
-    
-    try:
-        db.session.add(new_category)
-        db.session.commit()
-
-        return jsonify({'message': 'category added'}), 200
-    except Exception as e:
-        return jsonify({'message': 'failed'}), 500
-
-@app.route('/api/categories/<int:category_id>', methods=['PUT'])
-def update_category(category_id):
-    category_data = request.json
-
-    try:
-        category = Category.query.get(category_id)
-        
-        if category is None:
-            return jsonify({'message': 'Category not found'}), 404
-        
-        category.name = category_data.get('name', category.name)
-
-        db.session.commit()
-        return jsonify({'message': 'Category update succesfully'}), 200
-    except Exception as e:
-        return jsonify({'message': 'Error'})
-
-@app.route('/api/categories/<int:category_id>', methods=['DELETE'])
-def delete_category(category_id):
-    try:
-        category = Category.query.get(category_id)
-
-        if category is None:
-            return jsonify({'message': 'Category not found'}), 404
-
-        db.session.delete(category)
-        db.session.commit()
-
-        return jsonify({'message': 'Category deleted'}), 200
-    except IntegrityError:
-        db.session.rollback()  # Rollback the session to cancel the deletion operation
-        return jsonify({'message': 'Cannot delete the category due to existing references'}), 500
-    except Exception as e:
-        return jsonify({'message': f'Error: {str(e)}'}), 500
 
 # post_piece table CRUD
 @app.route('/api/post_pieces', methods=['GET'])
@@ -423,10 +360,12 @@ from datetime import datetime as dt
 @app.route('/api/post_pieces', methods=['POST'])
 def add_post_piece():
     try:
+        if not request.is_json:
+            return jsonify({'message': 'Missing JSON in request'}), 400
+        
         post_piece_data = request.json
         print(post_piece_data)
 
-        # Make sure the request data is a list of dictionaries
         if not isinstance(post_piece_data, list):
             return jsonify({'message': 'Invalid data format. Expected a list of dictionaries.'}), 400
 
@@ -443,10 +382,12 @@ def add_post_piece():
         db.session.commit()
 
         return jsonify({'message': 'Post Pieces added successfully'}), 200
+
     except Exception as e:
         db.session.rollback()
         print("Error:", str(e))
-        return jsonify({'message': 'Failed to add Post Pieces'}), 500
+        return jsonify({'message': 'Failed to add Post Pieces', 'error': str(e)}), 500
+
 
 
 
@@ -489,8 +430,7 @@ def get_pieces_by_post_id(post_id):
     pieces_list = [{
         'id': piece.id,
         'brand': piece.brand,
-        'model': piece.model,
-        'category_id': piece.category_id
+        'model': piece.model
     } for piece in pieces]
 
     print(f'Pieces found: {pieces_list}')

@@ -1,10 +1,23 @@
 <div class="navbar">
-    <a href="home" id="home">HOME</a>
-    <a href="share"><button id="share"> + SHARE</button></a>
-    <input type="text" placeholder="SEARCH" id="search">
-    <a (click)="evaluateUser()" id="username">Hi, {{username}}!</a>
-    <a (click)="logout()">logout</a>
+    <!-- Group 1: Aligned to the left -->
+    <div class="left-group">
+        <a href="home" id="home">HOME</a>
+        <a href="share"><button id="share"> + SHARE</button></a>
+    </div>
+
+    <!-- Centered Item -->
+    <h1>ORNATUM</h1>
+    
+    <!-- Group 2: Aligned to the right -->
+    <div class="right-group">
+        <a [matMenuTriggerFor]="userMenu" id="username">HI, {{username}}!</a>
+        <mat-menu #userMenu="matMenu">
+            <button mat-menu-item (click)="evaluateUser()" id="profile"><mat-icon>person</mat-icon>PROFILE</button>
+            <button mat-menu-item (click)="logout()" id="logout"><mat-icon id="exit">exit_to_app</mat-icon>LOGOUT</button>
+        </mat-menu>
+    </div>
 </div>
+<h3>Discover new trends:</h3>
 <div class="row">
     <div *ngFor="let image of postings" class="container">
         <a><img [src]="image.image_data" alt="Posting Image" class="item" (click)="onImageClick(image.id)"></a>

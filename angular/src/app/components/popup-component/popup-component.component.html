@@ -1,4 +1,3 @@
-<!-- popup-component.component.html -->
 <div *ngIf="data">
     <div class="container">
         <div class="image-container">
@@ -7,10 +6,12 @@
         <div class="pieces-list">
             <ul>
                 <li *ngFor="let piece of data.pieces">
-                    <strong>{{ piece.brand }}, {{ piece.model }} </strong>
+                    <strong>{{ piece.brand }}, {{ piece.model }} </strong><br>
                 </li>
+                <button  id='delete' *ngIf="currentRoute === '/profile'" mat-button color="warn" (click)="deletePost(data.id)">
+                    <mat-icon>delete</mat-icon>
+                </button>
             </ul>
         </div>
     </div>
-  </div>
-  
+</div>

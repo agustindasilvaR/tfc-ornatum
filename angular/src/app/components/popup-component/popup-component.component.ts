@@ -1,5 +1,8 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-popup-component',
@@ -8,11 +11,30 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 })
 export class PopupComponentComponent implements OnInit {
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any) {
-    console.log(data)
+  currentRoute: string | undefined;
+  postings: any[] = []
+
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private router:Router, private http: HttpClient, private snackBar: MatSnackBar, private dialogRef: MatDialogRef<PopupComponentComponent>) {
+    console.log(this.data.id)
    }
 
   ngOnInit(): void {
+    this.currentRoute = this.router.url
+    console.log(this.currentRoute)
   }
+
+  deletePost(postId: number): void {
+    this.http.delete(`http://127.0.0.1:8000/api/posts/${postId}`).subscribe(
+      (response: any) => {
+        console.log(response.message);
+        this.dialogRef.close()
+        window.location.reload()
+      },
+      (error: any) => {
+        console.error(error);
+      }
+    );
+  }
+
 
 }
