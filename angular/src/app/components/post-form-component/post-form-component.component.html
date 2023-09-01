@@ -25,7 +25,6 @@
     <label for="image_data">Upload an image</label><br>
     <input type="file" id="image_data" name="image_data" (change)="onFileSelected($event)" required>
 
-    <!-- Input fields for pieces -->
     <div *ngFor="let piece of piecesData; let i = index" class="piece-container">
 
       <input class="input" type="text" [id]="'brand' + i" [name]="'brand' + i" [(ngModel)]="piece.brand" placeholder="BRAND*" required>
@@ -36,7 +35,6 @@
   
 
   
-    <!-- Add Piece button -->
     <button type="button" class="button" (click)="addPieceInput()">ADD PIECE</button>
     <button type="button" class="button" (click)="deletePieceInput()">DELETE PIECE</button>
     <button type="submit" class="button">CONFIRM</button>

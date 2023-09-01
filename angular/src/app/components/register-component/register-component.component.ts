@@ -28,7 +28,7 @@ export class RegisterComponentComponent implements OnInit {
 
     if (!this.name || !this.surname || !this.username || !this.password || !this.email || !this.confirmPassword) {
       this.snackBar.open('Please fill in all fields.', 'Close', {
-        duration: 5000 // Set duration to 5 seconds (5000 milliseconds)
+        duration: 5000 
       });
       return;
     }
@@ -72,13 +72,13 @@ export class RegisterComponentComponent implements OnInit {
       res => {
         console.log(res);
         this.snackBar.open('User registered successfully!', 'Close', {
-          duration: 5000 // Set duration to 5 seconds (5000 milliseconds)
+          duration: 5000 
         });
       },
       error => {
         console.error(error);
         this.snackBar.open('Error occurred while saving the user.', 'Close', {
-          duration: 5000 // Set duration to 5 seconds (5000 milliseconds)
+          duration: 5000 
         });
       }
     );

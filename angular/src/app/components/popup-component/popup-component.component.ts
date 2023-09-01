@@ -16,7 +16,7 @@ export class PopupComponentComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, private router:Router, private http: HttpClient, private snackBar: MatSnackBar, private dialogRef: MatDialogRef<PopupComponentComponent>) {
     console.log(this.data.id)
-   }
+}
 
   ngOnInit(): void {
     this.currentRoute = this.router.url

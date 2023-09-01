@@ -111,14 +111,13 @@ logout(): void {
     formData.append('date', this.date);
     formData.append('image_data', this.image_data);
   
-    // Make a POST request to add the post to the API
     this.http.post<any>('http://127.0.0.1:8000/api/posts', formData).subscribe(
       (postResponse) => {
-        console.log("postResponse:", postResponse); // Log the response
+        console.log("postResponse:", postResponse); 
         if (postResponse && postResponse.post_id) {
-          console.log("Post created successfully!"); // You can show a success message if needed
+          console.log("Post created successfully!"); 
           const post_id = postResponse.post_id;
-          this.addPieces(post_id); // Call a method to add pieces to the post
+          this.addPieces(post_id); 
           this.snackBar.open('Post successfully uploaded!', 'Close', { duration: 5000 })
           this.router.navigate(['/home'])
         } else {
@@ -127,7 +126,6 @@ logout(): void {
       },
       (error) => {
         console.error(error);
-        // Handle error, show an error message, etc.
       }
     );
   }
@@ -135,12 +133,11 @@ logout(): void {
   addPieces(post_id: string) {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
   
-    // Make a POST request to add the pieces
+
     this.http.post<any>('http://127.0.0.1:8000/api/pieces', JSON.stringify(this.piecesData), { headers }).subscribe(
       (piecesResponse) => {
         console.log('Received piecesResponse:', piecesResponse);
 
-        // Transform the response to match the expected format for insertPostPieceRelationship
         const postPieces = piecesResponse.added_pieces.map((piece: { id: { toString: () => any; }; }) => ({
           post_id: post_id,
           piece_id: piece.id.toString()
@@ -152,7 +149,6 @@ logout(): void {
       },
       (error) => {
         console.error("Failed to add pieces:", error);
-        // Handle error, show an error message, etc.
       }
     );
 }
@@ -167,7 +163,6 @@ logout(): void {
     this.http.post<any>('http://127.0.0.1:8000/api/post_pieces', JSON.stringify(postPieces), { headers }).subscribe(
       (postPieceResponse) => {
         console.log("Post-Piece relationships added successfully:", postPieceResponse);
-        // Do something with the post-piece relationship response if needed
       },
       (error) => {
         console.error("Failed to add Post-Piece relationships:", error.error); // Print the error message from backend

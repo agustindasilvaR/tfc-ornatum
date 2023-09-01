@@ -90,12 +90,10 @@ export class HomeLayoutComponent implements OnInit {
           const decodedToken = jwtHelper.decodeToken(token);
           const storedId = decodedToken.id
           console.log(decodedToken.id)
-                  // Check if the storedId exists and is present in the postIds array
         if (storedId && userIds.includes(parseInt(storedId))) {
           this.router.navigateByUrl('/profile');
         }
         } else {
-          // Handle the case where the token is null
         }
 
 
@@ -124,7 +122,6 @@ getUsers(): void {
 
   this.http.get(url).subscribe(
     (response: any) => {
-      // Process the user data here
       console.log('User data:', response);
     },
     (error: any) => {
@@ -140,11 +137,10 @@ printId(id: number): void {
 }
 
 logout(): void {
-  // Clear the JWT token from local storage
+
   localStorage.removeItem('token');
 
-  // Redirect the user to the login page
-  this.router.navigate(['/login']); // Replace '/login' with the appropriate login page URL
+  this.router.navigate(['/login']); 
 }
 
 checkToken(): void {

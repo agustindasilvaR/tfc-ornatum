@@ -31,7 +31,7 @@
 .piece-container {
     display: flex;
     align-items: center;
-    gap: 10px; /* Adjust the gap as needed */
+    gap: 10px; 
 }
 
 h3 {
@@ -108,7 +108,7 @@ a:hover {
     margin-left: 200px;
     width: 1000px;
     text-align: start;
-    padding: 8px 0; /* I've adjusted the padding shorthand property for top and bottom */
+    padding: 8px 0;
     border-radius: 20px;
     background-color: rgb(203 203 203);
     border: none;

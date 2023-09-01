@@ -92,19 +92,19 @@ export class ProfileComponentComponent implements OnInit {
             this.user_id = storedId
             console.log(storedId);
 
-            // Check if the storedId exists and is present in the userIds array
+
             if (userIds.includes(storedId)) {
-              resolve(storedId); // Resolve the promise with the user ID
+              resolve(storedId); 
             } else {
-              reject('User ID not found in the list.'); // Reject the promise if user ID not found
+              reject('User ID not found in the list.'); 
             }
           } else {
-            reject('Token not found.'); // Reject the promise if token is null
+            reject('Token not found.'); 
           }
         },
         (error: any) => {
           console.error('Error getting user list:', error);
-          reject(error); // Reject the promise on HTTP request error
+          reject(error); 
         }
       );
     });
@@ -139,11 +139,11 @@ export class ProfileComponentComponent implements OnInit {
   }
 
   logout(): void {
-    // Clear the JWT token from local storage
+
     localStorage.removeItem('token');
   
-    // Redirect the user to the login page
-    this.router.navigate(['/login']); // Replace '/login' with the appropriate login page URL
-  }
 
+    this.router.navigate(['/login']); 
+
+}
 }
