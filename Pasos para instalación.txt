@@ -1,0 +1,38 @@
+Pasos para instalación:
+
+PARA INICIALIZAR EL BACKEND:
+
+NOS UBICAMOS EN EL DIRECTORIO 'FLASK' Y EJECUTAMOS PHPMYADMIN DESDE XAMPP EN EL PUERTO 3386 
+
+importante: importar el sql que dejo en el repositorio (ornatum.sql)
+
+1. Ya que estamos en python deberemos crear un entorno virtual utilizando venv
+que ya viene por defecto con python, ejecutamos los siguientes comandos:
+
+python -m venv el_nombre_que_gustes
+
+source el_nombre_que_gustes/Scripts/activate.bat (windows)
+source el_nombre_que_gustes/bin/activate (MacOS/Linux)
+
+
+2. Una vez inicilaizado el entorno virtual, instalamos todas las dependencias del proyecto, ejecutamos:
+
+pip install -r requirements.txt
+
+
+3. Cuando finalice la instalacion de las dependencias ejecutamos la API, ejecutamos desde consola:
+
+python main.py
+
+Se ejecutará por defecto en el puerto 8000
+
+
+
+PARA INICIALIZAR EL FRONTEND:
+
+NOS UBICAMOS EN EL DIRECTORIO 'ANGULAR' Y HACEMOS LO SIGUIENTE
+
+1. ejecutamos 'npm install' para instalar cualquier posible dependencia del proyecto
+
+2. ejecutamos el comando 'ng serve -o' y se nos abrirá la aplicación en nuestro navegador predeterminado.
+
