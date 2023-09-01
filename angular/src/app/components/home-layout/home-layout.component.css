@@ -15,12 +15,18 @@
   padding-right: 145px;
 }
 
+#logo {
+  margin-top: 10px;
+  max-width: 15%;
+  max-height: 15%;
+}
+
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
-  margin-top: 30px;
+  margin-top: 9px;
   margin-bottom: 50px;
 }
 

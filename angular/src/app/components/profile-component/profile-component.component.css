@@ -20,7 +20,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
-  margin-top: 30px;
+  margin-top: 9px;
   margin-bottom: 50px;
 }
 
@@ -199,6 +199,12 @@ input[type="text"]::placeholder {
     width: 25%; 
     height: 500px; 
     overflow: hidden; 
+  }
+
+  #logo {
+    margin-top: 10px;
+    max-width: 15%;
+    max-height: 15%;
   }
   
   .container img {

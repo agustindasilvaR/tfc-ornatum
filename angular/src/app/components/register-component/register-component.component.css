@@ -18,6 +18,12 @@ a {
     padding-top: 30px;
 }
 
+#logo {
+    margin-top: 20px;
+    max-width: 15%;
+    max-height: 15%;
+  }
+
 .input {
     border-radius: 5px;
     background-color: rgb(212, 212, 212);

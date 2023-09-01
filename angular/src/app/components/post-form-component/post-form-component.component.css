@@ -139,6 +139,12 @@ input[type="text"]::placeholder {
     width: 275px;
 }
 
+#logo {
+    margin-top: 10px;
+    max-width: 15%;
+    max-height: 15%;
+  }
+
 .input::placeholder {
     padding-left: 4px;
     color: black;
