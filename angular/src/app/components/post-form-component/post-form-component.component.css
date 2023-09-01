@@ -143,3 +143,7 @@ input[type="text"]::placeholder {
     padding-left: 4px;
     color: black;
 }
+
+button {
+    cursor: pointer;
+}

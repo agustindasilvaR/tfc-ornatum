@@ -10,12 +10,12 @@ class User(db.Model):
     email = db.Column(db.String(80), unique=True)
     password = db.Column(db.LargeBinary)  # Change column type to LargeBinary
 
-    def __init__(self, id, name, surname, username, email, password):
+    def __init__(self, name, surname, username, email, password):
         self.name = name
         self.surname = surname
         self.username = username
         self.email = email
-        self.password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+        self.password = bcrypt.hashpw(password, bcrypt.gensalt())
 
     def check_password(self, password):
         return bcrypt.checkpw(password.encode('utf-8'), self.password)
