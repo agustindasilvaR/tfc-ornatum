@@ -26,7 +26,7 @@ export class ProfileComponentComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.checkToken()
-    await this.evaluateUser(); // Wait for evaluateUser() to complete
+    await this.evaluateUser();
     this.getUserName()
     this.getPostingsByUserId(this.user_id);
   }
@@ -81,7 +81,6 @@ export class ProfileComponentComponent implements OnInit {
       this.http.get(url).subscribe(
         (response: any) => {
           const userIds = response.map((user: any) => user.id);
-          console.log('User IDs:', userIds);
 
           const token = localStorage.getItem('token');
 
@@ -90,7 +89,6 @@ export class ProfileComponentComponent implements OnInit {
             const decodedToken = jwtHelper.decodeToken(token);
             const storedId = decodedToken.id;
             this.user_id = storedId
-            console.log(storedId);
 
 
             if (userIds.includes(storedId)) {
@@ -101,17 +99,12 @@ export class ProfileComponentComponent implements OnInit {
           } else {
             reject('Token not found.'); 
           }
-        },
-        (error: any) => {
-          console.error('Error getting user list:', error);
-          reject(error); 
         }
       );
     });
   }
 
   onImageClick(postId: number): void {
-    console.log(this.postings)
     const url = `http://127.0.0.1:8000/api/posts/${postId}/pieces`;
   
     this.http.get<any[]>(url).subscribe(
@@ -124,10 +117,6 @@ export class ProfileComponentComponent implements OnInit {
           width: '1200px',
           height: '800px',
         });
-        console.log(this.pieces)
-      },
-      (error: any) => {
-        console.error('Error fetching post pieces:', error);
       }
     );
   }

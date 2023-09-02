@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/app/service/user.service';
 import { User } from 'src/app/models/User';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register-component',
@@ -19,7 +20,7 @@ export class RegisterComponentComponent implements OnInit {
 
   user:User = new User()
 
-  constructor(private userService:UserService, private snackBar:MatSnackBar) { }
+  constructor(private userService:UserService, private snackBar:MatSnackBar, private router:Router) { }
 
   ngOnInit(): void {
   }
@@ -27,17 +28,17 @@ export class RegisterComponentComponent implements OnInit {
   save(){
 
     if (!this.name || !this.surname || !this.username || !this.password || !this.email || !this.confirmPassword) {
-      this.snackBar.open('Please fill in all fields.', 'Close', {
+      this.snackBar.open('Please fil8i9l in all fields.', 'Close', {
         duration: 5000 
       });
       return;
     }
   
-    // Validate password using regex
+
     const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
     if (!passwordPattern.test(this.password)) {
       this.snackBar.open('Password should have at least 8 characters, including one uppercase letter, one lowercase letter, and one digit.', 'Close', {
-        duration: 5000 // Set duration to 5 seconds (5000 milliseconds)
+        duration: 5000
       });
       return;
     }
@@ -45,14 +46,14 @@ export class RegisterComponentComponent implements OnInit {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailPattern.test(this.email)) {
       this.snackBar.open('Please enter a valid email address.', 'Close', {
-        duration: 5000 // Set duration to 5 seconds (5000 milliseconds)
+        duration: 5000 
       });
       return;
     }
 
     if (this.password !== this.confirmPassword) {
       this.snackBar.open('Passwords must be equal.', 'Close', {
-        duration: 5000 // Set duration to 5 seconds (5000 milliseconds)
+        duration: 5000 
       });
       return;
     }
@@ -70,13 +71,12 @@ export class RegisterComponentComponent implements OnInit {
 
     this.userService.saveUser(this.user).subscribe(
       res => {
-        console.log(res);
         this.snackBar.open('User registered successfully!', 'Close', {
           duration: 5000 
         });
+        this.router.navigate(['/login'])
       },
       error => {
-        console.error(error);
         this.snackBar.open('Error occurred while saving the user.', 'Close', {
           duration: 5000 
         });

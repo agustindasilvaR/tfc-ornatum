@@ -6,6 +6,7 @@ from main import app, db
 import base64
 from models import User, Posting, Piece, PostPiece
 from datetime import date as dt
+from sqlalchemy import asc, desc
 import jwt
 
 
@@ -120,7 +121,8 @@ def login():
 # Posting table CRUD
 @app.route('/api/posts', methods=['GET'])
 def get_posts():
-    posts = Posting.query.all()
+    posts = Posting.query.order_by(asc(Posting.date)).all()
+
     post_list = []
 
     for post in posts:
@@ -175,21 +177,19 @@ def get_user_posting_images(user_id):
     return jsonify(response_data), 200
 
 
-
-
-
 @app.route('/postings/images', methods=['GET'])
 def get_all_posting_images():
-    postings = Posting.query.all()
+    # Order postings by date in descending order (most recent first)
+    postings = Posting.query.order_by(desc(Posting.date)).all()
 
     images = []
     for posting in postings:
         image_data = base64.b64encode(posting.image_data).decode('utf-8')
         # If you stored image URLs instead of binary data, you can construct the URL here instead
-
         images.append(image_data)
 
     return jsonify({'images': images})
+
 
 
 

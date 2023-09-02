@@ -45,7 +45,7 @@ evaluateUser(): void {
   this.http.get(url).subscribe(
     (response: any) => {
       const userIds = response.map((user: any) => user.id);
-      console.log('User IDs:', userIds);
+
       
       const token = localStorage.getItem('token')
 
@@ -54,29 +54,22 @@ evaluateUser(): void {
       if (token !== null) {
         const decodedToken = jwtHelper.decodeToken(token);
         const storedId = decodedToken.id
-        console.log(decodedToken.id)
-                // Check if the storedId exists and is present in the postIds array
       if (storedId && userIds.includes(parseInt(storedId))) {
         this.router.navigateByUrl('/profile');
       }
       } else {
-        // Handle the case where the token is null
       }
 
 
-    },
-    (error: any) => {
-      console.error('Error getting post_list:', error);
     }
   );
 }
 
 logout(): void {
-  // Clear the JWT token from local storage
+
   localStorage.removeItem('token');
 
-  // Redirect the user to the login page
-  this.router.navigate(['/login']); // Replace '/login' with the appropriate login page URL
+  this.router.navigate(['/login']);
 }
 
   getCurrentDate() {
@@ -96,36 +89,58 @@ logout(): void {
     }
   }
 
-  onFileSelected(event: any) {
-    this.image_data = event.target.files[0];
-  }
+  onFileSelected(event: Event): void {
+    const fileInput = event.target as HTMLInputElement | null;  // Add the | null type
+    
+    if (fileInput && fileInput.files && fileInput.files.length > 0) {
+        this.image_data = fileInput.files[0];
+        
+        const fileName = fileInput.files[0].name;
+        const extension = fileName.split('.').pop()?.toLowerCase();
+        
+        if (!extension) {
+            return;
+        }
+
+        if (['png', 'jpeg', 'jpg'].includes(extension)) {
+
+        } else {
+          this.snackBar.open('File type not valid.', 'Close', { duration: 5000 })
+          this.clearFileInput(fileInput);
+        }
+    }
+}
+
+  clearFileInput(fileInput: HTMLInputElement) {
+    fileInput.value = '';
+}
+
+  
 
   uploadPost() {
-    if (!this.user_id || !this.date || !this.image_data) {
-      console.error("Please fill in all required fields for the post.");
+    if (!this.user_id || !this.image_data) {
+      this.snackBar.open('Please fill all the required fields.', 'Close', {
+        duration: 5000 
+      });
       return;
     }
   
     const formData = new FormData();
     formData.append('user_id', this.user_id);
-    formData.append('date', this.date);
     formData.append('image_data', this.image_data);
   
     this.http.post<any>('http://127.0.0.1:8000/api/posts', formData).subscribe(
       (postResponse) => {
-        console.log("postResponse:", postResponse); 
-        if (postResponse && postResponse.post_id) {
-          console.log("Post created successfully!"); 
+        if (postResponse && postResponse.post_id) { 
           const post_id = postResponse.post_id;
           this.addPieces(post_id); 
           this.snackBar.open('Post successfully uploaded!', 'Close', { duration: 5000 })
           this.router.navigate(['/home'])
         } else {
-          console.error("Invalid response from the backend:", postResponse);
+          this.snackBar.open('Error while uploading.', 'Close', {
+            duration: 5000 
+          });
         }
-      },
-      (error) => {
-        console.error(error);
       }
     );
   }
@@ -136,19 +151,13 @@ logout(): void {
 
     this.http.post<any>('http://127.0.0.1:8000/api/pieces', JSON.stringify(this.piecesData), { headers }).subscribe(
       (piecesResponse) => {
-        console.log('Received piecesResponse:', piecesResponse);
 
         const postPieces = piecesResponse.added_pieces.map((piece: { id: { toString: () => any; }; }) => ({
           post_id: post_id,
           piece_id: piece.id.toString()
         }));
-
-        console.log('Sending transformed postPieces:', postPieces);
         
         this.insertPostPieceRelationship(postPieces);
-      },
-      (error) => {
-        console.error("Failed to add pieces:", error);
       }
     );
 }
@@ -157,15 +166,9 @@ logout(): void {
 
   insertPostPieceRelationship(postPieces: { post_id: string, piece_id: string }[]) {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
-
-    console.log('Sending postPieces:', postPieces);
   
     this.http.post<any>('http://127.0.0.1:8000/api/post_pieces', JSON.stringify(postPieces), { headers }).subscribe(
       (postPieceResponse) => {
-        console.log("Post-Piece relationships added successfully:", postPieceResponse);
-      },
-      (error) => {
-        console.error("Failed to add Post-Piece relationships:", error.error); // Print the error message from backend
       }
     );
 }

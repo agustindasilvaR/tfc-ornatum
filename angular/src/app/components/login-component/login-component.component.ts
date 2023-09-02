@@ -29,8 +29,7 @@ export class LoginComponentComponent implements OnInit {
   
         const jwtHelper = new JwtHelperService();
         const decodedToken = jwtHelper.decodeToken(token);
-  
-        console.log('Decoded Token:', decodedToken);
+
   
         this.router.navigate(['/home']);
 
